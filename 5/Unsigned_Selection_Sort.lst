@@ -1,0 +1,81 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ; Unsigned_Selection_Sort.asm
+                        ;
+                        ; Author: Yanni Li
+                        ; Section: TUE. 8:00-10:00
+                        ; Date: 30/03/2020
+                        
+                        ; Purpose:      This lab uses effectively uses iteration, pointers and
+                        ;		the Indexed Addressing Mode to sort the following playing cards
+                        ;		using the provided Selection Sort Algorithm and Pseudocode.
+                        ;
+                        ; Operation:    Selection sort will be used in this lab, to achieve our goals,
+                        ;               use nested for loop to find the minum number from outter to inner
+                        
+1000                    		org     $1000
+1000 08 04 05 0e 09 09  Array		db      $08,$04,$05,$0e,$09,$09,$05,$08,$08,$0d         ; define an array stores from $1000
+     05 08 08 0d
+                        ;Array           db      3, 1, 2
+100a                    EndArray
+                        
+100a                    HEAD            ds      1       ; define storage to swap elements in the array
+100b                    MIN             ds      1
+100c                    TEMP            ds      1
+                        
+000a                    Len             equ     EndArray-Array
+2000                    STACK           equ	#$2000  ; define stack pointer with value $2000
+2000                                    org     $2000
+2000 cf 20 00                           lds     #STACK   ; load stack pointer
+                                        
+2003 cd 10 00                           ldy     #Array  ; load array into y
+2006 86 00                              ldaa    #0      ; int index a = 0
+                                        
+2008 e6 ec              OuterLoop       ldab    a,y     ; b's value will be the first element in array
+200a 36                                 psha            ; store a
+200b 7a 10 0a                           staa    HEAD    ; store HEAD into a
+200e 7a 10 0b                           staa    MIN     ; store MIN into a as a parameter
+2011 42                                 inca
+                                        
+2012 e1 ec              InnerLoop       cmpb    a,y     ; compare a and b
+2014 25 05                              blo     Jump    ; if b<a  go to the JUMP
+2016 e6 ec                              ldab    a,y     ; load b into a
+2018 7a 10 0b                           staa    MIN     ; store a
+                        
+201b                    Jump
+201b 42                                 inca            ; index a++
+201c 81 0a                              cmpa    #Len    ; a<Len(10)
+201e 26 f2                              bne     InnerLoop       ; branch if not equal go to InnerLoop
+                                        
+2020 16 20 29                           jsr     Switch          ; goes to sub routine
+                                        
+2023 32                                 pula                    ; get a's value
+2024 42                                 inca
+2025 81 09              		cmpa    #Len-1
+2027 26 df                              bne     OuterLoop
+                                        end
+                        
+2029 b6 10 0a           Switch          ldaa    HEAD    ; compare elements in the array, take HEAD,
+202c e6 ec              		ldab    a,y     ; TEMP and MIN as variables, find the smallest
+202e 7b 10 0c                           stab    TEMP    ; then swap the positions
+2031 b6 10 0b                           ldaa    MIN
+2034 e6 ec                              ldab    a,y
+2036 b6 10 0a                           ldaa    HEAD
+2039 6b ec                              stab    a,y
+203b b6 10 0b                           ldaa    MIN
+203e f6 10 0c                           ldab    TEMP
+2041 6b ec                              stab    a,y
+2043 79 10 0a                           clr     HEAD
+2046 79 10 0b                           clr     MIN
+2049 79 10 0c                           clr     TEMP
+204c 3d                                 rts
+                                        
+                                        
+                        
+                        
+                        
+
+Executed: Mon Mar 30 23:13:02 2020
+Total cycles: 94, Total bytes: 87
+Total errors: 0, Total warnings: 0

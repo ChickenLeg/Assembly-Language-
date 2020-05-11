@@ -1,0 +1,20 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ; Stack Emample1
+2000                            org     $2000
+2000 cf 20 00                   LDS     #$2000  ;Load stack pointer
+2003 86 aa                      LDAA    #$AA    ; load accumulator A
+2005 c6 bb                      LDAB    #$BB    ;
+2007 36                         PSHA            ; Push A onto stack
+2008 37                         PSHB            ;
+2009 32                         PULA            ; Pull A from stack
+200a 33                         PULB            ;
+200b cc 11 dd                   LDD     #$11DD  ; load accumulator D
+200e 3b                         PSHD            ; Push D onto stack
+200f 3a                         PULD            ; Pull D from stack
+                                end
+
+Executed: Mon Mar 23 08:55:28 2020
+Total cycles: 23, Total bytes: 16
+Total errors: 0, Total warnings: 0

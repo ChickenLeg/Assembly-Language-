@@ -1,0 +1,11 @@
+array      1000
+endarray   100a
+head       100a
+innerloop  2012
+jump       201b
+len        000a
+min        100b
+outerloop  2008
+stack      2000
+switch     2029
+temp       100c

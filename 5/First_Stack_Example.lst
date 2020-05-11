@@ -1,0 +1,47 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ; First_Stack_Example.asm
+                        ; Author: Brightspace Example
+                        
+2000                    STACK           equ     $2000   ; Stack pointer of $2000
+1234                    PHONE_NUMBER    equ     $1234   ; phone number is $1234
+                        
+1000                            org     $1000
+1000                    NUM_POP         ds      1
+1001                    NUM_PIZZA       ds      1
+                        
+2000                            org     $2000
+2000 cf 20 00                   lds     #$2000
+                                
+2003 87                         clra
+2004 86 21                      ldaa    #$21            ; Number of Pizzas to order
+2006 36                         psha                    ; store pizza order into stack
+2007 c6 32                      ldab    #$32            ; Number of Pop to order
+2009 37                         pshb                    ; store pop onto stack
+200a 16 20 59                   jsr     Order_Food      ; Transmit Food Order to Shop
+200d 32                         pula
+200e 7a 10 00                   staa    NUM_POP
+2011 32                         pula
+2012 7a 10 01                   staa    NUM_PIZZA
+                        
+2015 20 46                      bra     Here
+                                
+2059                            org     $2059
+2059                    Order_Food
+2059 cd 12 34                   ldy    #PHONE_NUMBER   ; prepare to fax order
+                        ;
+                        ;
+                        ;
+205c 3d                         rts
+                                
+                        Here    End
+                        
+                                
+                                
+                                
+                                
+
+Executed: Tue Mar 31 08:06:22 2020
+Total cycles: 41, Total bytes: 27
+Total errors: 0, Total warnings: 0

@@ -1,0 +1,54 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ; Exchange_Elements.asm
+                        
+                        ; Author: Yanni Li
+                        ; Section: TUE. 8:00-10:00
+                        ; Date: 30/03/2020
+                        
+                        ; Purpose:      This lab uses iteration and pointers to swap the first element with
+                        ;		the last element of an array, the second element with the
+                        ;		second-to-last element, and so on.
+                        
+                        ; Operation:    Use push and pop function to store and get values,
+                        ;               last in first out on stack, address is getting bigger when goes
+                        ;               down, vice versa. For Loop to loop though array elements.
+                        
+1000                            org     $1000   ; where program starts
+1000 73 6e 41 2d 20 73  Elements        db      115,110,065,045,032,115,105,032,101,103,097
+     69 20 65 67 61
+100b 75 67 6e 61 4c 21                  db      117,103,110,097,076,033,121,109,098,107,102
+     79 6d 62 6b 66
+1016 74 74 43                           db      116,116,067
+1019                    EndElements
+0019                    Len     equ     EndElements-Elements    ; sizeof ()=Length of the array
+2000                    STACK   equ     #$2000                  ; create stack pointer with value
+2000                            org     $2000
+2000 cf 20 00                   lds     #STACK			; load the stack poiner with value $2000
+2003 ce 10 00                   ldx     #Elements
+                                
+2006 86 00                      ldaa    #0                      ; int i = 0;
+2008 81 19              loop1   cmpa    #Len                    ; i < Len(25)
+200a 24 06                      bhs     EndLoop1
+200c e6 30                      ldab    1,x+                    ; ldab 0,x; inx;
+200e 37                         pshb                            ; push B into the stack
+200f 42                         inca                            ; i++
+2010 20 f6                      bra     Loop1
+2012                    EndLoop1
+                        
+2012 86 00                      ldaa    #0                      ; int i = 0;
+2014 ce 10 00                   ldx     #Elements               ; load x of array Elements
+2017 81 19              loop2   cmpa    #Len                    ; i < Len(25)
+2019 24 06                      bhs     EndLoop2
+201b 33                         pulb                  		; pop B
+201c 6b 30                      stab	1,x+                    ; push B into the stack
+201e 42                         inca
+201f 20 f6                      bra     Loop2
+2021                    EndLoop2
+                        
+                                end
+
+Executed: Mon Mar 30 21:13:57 2020
+Total cycles: 35, Total bytes: 58
+Total errors: 0, Total warnings: 0

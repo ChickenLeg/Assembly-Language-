@@ -1,0 +1,23 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+2000                    STACK   equ     $2000
+                        
+1000                            org     $1000
+1000 0c 81 0a 0b        MyArray db      $0C,$81,$0A,11
+1004                    Result  ds      1
+                        
+2000                            org     $2000
+2000 cf 20 00           Start   lds     #STACK
+2003 c7                         clrb
+2004 fb 10 00                   addb    MyArray
+2007 b6 10 01                   ldaa    MyArray+1
+200a 41                         coma
+200b 18 06                      aba
+200d 7a 10 04                   staa    Result
+2010 3f                         swi
+                                end
+
+Executed: Thu Apr 02 11:05:52 2020
+Total cycles: 31, Total bytes: 21
+Total errors: 0, Total warnings: 0

@@ -1,0 +1,36 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+CopyData_Unit3_Using_Pointers.asm:7: Warning - Value too large and has been masked to 0xFF
+                        ; CopyData_Unit3_Using_Pointers.asm
+                        ; Copy 6 values starting at memory location $1000 to a memory location starting at $020
+                        
+2000                    STACK   equ     $2000
+                        
+1000                            org     $1000
+CopyData_Unit3_Using_Pointers.asm:7: Warning - Value too large and has been masked to 0xFF
+1000 01 22 99 02 44 32  SOURCE        db      $01,$22,$99,$102,$44,$32
+1006                    EndData
+1020                            org     $1020
+1020                    Dest    ds      EndData-Source          ;length of data that will be moved here
+                        
+2000                    	org     $2000   ; Program area
+2000 cf 20 00           	lds     #STACK  ; stack location
+2003 ce 10 00           	ldx     #Source ; Point to starting address of Source
+2006 cd 10 20           	ldy     #Dest   ; Point to starting address of Destination
+                        	
+2000                            org     $2000   ; Program area
+2000 cf 20 00           Start	lds     #STACK  ;
+2003 ce 10 00           	ldx     #Source ; Point to starting address of Source
+2006 cd 10 20           	ldy     #Dest   ; Point to starting address of Destination
+2009 a6 30              Loop    ldaa    1,x+    ; readd in a byte and increment pointer by 1
+200b 6a 70                      staa    1,y+    ; store byte and increment pointer by 1
+200d 8e 10 06                   cpx     #EndData        ; Done?
+2010 26 f7                      bne     Loop    ; No? Loop Again
+2012 3f                         swi             ; Yes
+                                end
+                                
+
+Executed: Mon Mar 09 09:12:27 2020
+Total cycles: 35, Total bytes: 34
+Total errors: 0, Total warnings: 2

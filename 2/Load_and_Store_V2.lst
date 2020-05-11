@@ -1,0 +1,22 @@
+
+as12, an absolute assembler for Motorola MCU's, version 1.2h
+
+                        ; Load_and_Store_V2.as,
+                        
+                        ; Copy a word (16 bits)
+                        
+1000                            org     $1000           ; Data stores here
+1000 12 34              Source  dw      $1234           ; Define a 16 bit word $1234 starting at Source
+                        
+1020                            org     $1020           ; Destination address
+1020                    Dest    ds.w    1               ; Reserve storage for 1 sixteen bit word
+                        
+2000                            org     $2000           ; Program Code starts at $2000
+2000 fc 10 00                   ldd     Source          ; Get the word
+2003 7c 10 20                   std     Dest            ; Store the word
+2006 3f                         swi
+                                end
+
+Executed: Sun Mar 01 18:51:35 2020
+Total cycles: 22, Total bytes: 9
+Total errors: 0, Total warnings: 0
